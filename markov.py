@@ -56,19 +56,46 @@ def make_text(chains):
     """Return text from chains."""
 
     words = []
-    key = choice(list(chains.keys()))
+    # keys = (list(chains.keys()))
+    # key_capital = []
+    # for key in keys:
+    #     if key[0][0].isupper():
+    #         key_capital.append(key)
+    # key_start = choice(key_capital)
+    key_capital = []
+    keys = (list(chains.keys()))
+    for key in keys:
+        if key[0][0].isupper():
+            key_capital.append(key)
+    key_start = choice(key_capital)
+
+    words.extend([key_start[0], key_start[1]])
+
+    key = key_start
 
     while key in chains:
-        words.extend([key[0], key[1]])
         value_list = chains.get(key)
         rand_value = choice(value_list)
         words.extend([rand_value])
         key = (key[1], rand_value)
+        if len(words) > 40 and key[1][-1] in "?.!":
+            break
+
 
     return " ".join(words)
 
 
-input_path = argv[1]
+# def capitalize_chain(chains):
+#     key_capital = []
+#     keys = (list(chains.keys()))
+#     for key in keys:
+#         if key[0][0].isupper():
+#             key_capital.append(key)
+#     key_start = choice(key_capital)
+#     return key_start[0] + " " + key_start[1] + " " + make_text(chains)
+
+
+input_path = 'spirits.txt'
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
@@ -79,6 +106,6 @@ chains = make_chains(input_text)
 # Produce random text
 random_text = make_text(chains)
 
-print(chains)
-
 print(random_text)
+
+
